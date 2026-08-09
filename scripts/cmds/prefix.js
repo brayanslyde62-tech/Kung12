@@ -5,10 +5,10 @@ module.exports = {
 				config: {
 								name: "prefix",
 								version: "1.4",
-								author: "NTKhang & NeoKEX",
+								author: "NTKhang / Christus",
 								countDown: 5,
 								role: 0,
-								description: "Thay đổi dấu lệnh của bot trong box chat của bạn hoặc cả hệ thống bot (chỉ admin bot)",
+								description: "Changer le préfixe de commande du bot dans votre groupe ou dans tout le système (réservé aux admins bot)",
 								category: "config",
 								guide: {
 												vi: "   {pn} <new prefix>: thay đổi prefix mới trong box chat của bạn"
@@ -24,7 +24,14 @@ module.exports = {
 																+ "\n\n   {pn} <new prefix> -g: change new prefix in system bot (only admin bot)"
 																+ "\n   Example:"
 																+ "\n    {pn} # -g"
-																+ "\n\n   {pn} reset: change prefix in your box chat to default"
+																+ "\n\n   {pn} reset: change prefix in your box chat to default",
+												fr: "   {pn} <nouveau préfixe> : change le préfixe dans votre groupe\n"
+																+ "   Exemple :\n"
+																+ "    {pn} #\n\n"
+																+ "   {pn} <nouveau préfixe> -g : change le préfixe dans tout le système du bot (admin bot uniquement)\n"
+																+ "   Exemple :\n"
+																+ "    {pn} # -g\n\n"
+																+ "   {pn} reset : réinitialise le préfixe de votre groupe à celui par défaut"
 								}
 				},
 
@@ -46,6 +53,15 @@ module.exports = {
 												successGlobal: "Changed prefix of system bot to: %1",
 												successThisThread: "Changed prefix in your box chat to: %1",
 												myPrefix: "👋 Hey %1, did you ask for my prefix?\n➥ 🌐 Global: %2\n➥ 💬 This Chat: %3\nI'm %4 at your service 🫡"
+								},
+								fr: {
+												reset: "Votre préfixe a été réinitialisé : %1",
+												onlyAdmin: "Seul un admin bot peut changer le préfixe du système",
+												confirmGlobal: "Réagissez à ce message pour confirmer le changement de préfixe du système",
+												confirmThisThread: "Réagissez à ce message pour confirmer le changement de préfixe dans ce groupe",
+												successGlobal: "Le préfixe du système a été changé en : %1",
+												successThisThread: "Le préfixe de ce groupe a été changé en : %1",
+												myPrefix: "👋 Hey %1, tu m’as demandé mon préfixe ?\n➥ 🌐 Global : %2\n➥ 💬 Ce groupe : %3\nJe suis %4 à ton service 🫡"
 								}
 				},
 
