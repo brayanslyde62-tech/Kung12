@@ -1,112 +1,97 @@
 const os = require("os");
-const { getTime } = global.utils;
-
-function formatDuration(seconds) {
-	const d = Math.floor(seconds / (3600 * 24));
-	const h = Math.floor((seconds % (3600 * 24)) / 3600);
-	const m = Math.floor((seconds % 3600) / 60);
-	const s = Math.floor(seconds % 60);
-
-	const time = [h, m, s].map(v => v.toString().padStart(2, "0")).join(":");
-	return d > 0 ? `${d}j ${time}` : time;
-}
-
-function createBar(percent, size = 20) {
-	const filled = Math.round((percent / 100) * size);
-	const empty = size - filled;
-	const bar = "█".repeat(filled) + "░".repeat(empty);
-	const color = percent > 85 ? "🔴" : percent > 60 ? "🟡" : "🟢";
-	return `${color} [${bar}] ${percent}%`;
-}
 
 module.exports = {
-	config: {
-		name: "uptime",
-		aliases: ["runtime", "status", "up", "F"],
-	version: "3.1",
-	author: "NeoKEX x Stack's",
-		editor: "Camille Uchiha 🍓",
-		countDown: 5,
-	role: 4,
-		longDescription: "Affiche l'uptime et les stats du bot en mode terminal hacker.",
-		category: "system",
-	guide: {
-			en: "{pn}",
-			fr: "{pn}"
-		}
-	},
 
-	onStart: async function ({ message, api, event }) {
-		try {
-			// --- CAPTURE DES DONNÉES SYSTÈME ---
-			const uptime = formatDuration(process.uptime());
-			const botUptime = formatDuration(Date.now() / 1000 - global.GoatBot.startTime);
+  config: {
+    name: "uptime",
+    aliases: ["up", "ut"],
+    version: "5.4",
+    author: "Crimson 🥷🪽",
+    countDown: 5,
+    role: 0,
+    shortDescription: {
+      fr: "Statut complet et métriques du bot"
+    },
+    category: "info"
+  },
 
-			const totalMem = os.totalmem();
-			const freeMem = os.freemem();
-			const usedMem = totalMem - freeMem;
-			const ramPercent = parseFloat(((usedMem / totalMem) * 100).toFixed(1));
+  onStart: async function ({ message, usersData }) {
+    const startPing = Date.now();
 
-			const toGB = bytes => (bytes / 1024 / 1024 / 1024).toFixed(2);
-			const toMB = bytes => (bytes / 1024 / 1024).toFixed(2);
+    // URLs d'images directes et vérifiées
+    const images = [
+      "https://us.oricon-group.com/upimg/sns/1000/1953/img1200/1257ec3464d228a6dac26d1cf9710d26.jpg"
+    ];
 
-			const cpu = os.cpus()[0];
-			const cpuModel = cpu.model;
-			const cpuCores = os.cpus().length;
-			const cpuSpeed = cpu.speed;
+    const img = images[Math.floor(Math.random() * images.length)];
 
-			const mem = process.memoryUsage();
-			const load = os.loadavg().map(v => v.toFixed(2)).join(" • ");
+    // Calcul de l'uptime
+    const uptime = process.uptime();
+    const d = Math.floor(uptime / 86400);
+    const h = Math.floor((uptime % 86400) / 3600);
+    const m = Math.floor((uptime % 3600) / 60);
+    const s = Math.floor(uptime % 60);
 
-			const botID = global.GoatBot?.botID || "N/A";
-			const commandCount = global.GoatBot?.commands?.size || 0;
-			const threadCount = global.db?.allThreadData?.length || 0;
-			const userCount = global.db?.allUserData?.length || 0;
+    // Métriques mémoire
+    const ramUsed = Math.round(process.memoryUsage().rss / 1024 / 1024);
+    const totalRam = Math.round(os.totalmem() / 1024 / 1024);
 
-			// --- MESSAGE TERMINAL HACKER ---
-			const msg = 
-`🍓━━━━━━━━🍓
-[+]_STACKS_OS_CORE_TERMINAL_v3.1
-STATUT: 🟢 ONLINE & STABLE
-━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    // Vrai calcul de latence au moment du rendu
+    const ping = Date.now() - startPing;
 
-> BOT_UPTIME_METRICS
-• RUNTIME    : ${uptime}
-• BOT_UPTIME : ${botUptime}
-• BOT_ID     : ${botID}
-• CMDS_LOAD  : ${commandCount} commandes
-• USERS_DB   : ${userCount} utilisateurs
-• THREADS_DB : ${threadCount} groupes
+    let adminName = "Inconnu";
+    try {
+      const adminUID = global.GoatBot.config.adminBot[0];
+      const adminInfo = await usersData.get(adminUID);
+      adminName = adminInfo.name;
+    } catch (e) {}
 
-> ENGINE_ENVIRONMENT
-• NODE_VER   : v${process.versions.node}
-• V8_ENGINE  : ${process.versions.v8}
-• NODE_PID   : ${process.pid}
-• HEAP_USED  : ${toMB(mem.heapUsed)} MB
-• HEAP_TOTAL : ${toMB(mem.heapTotal)} MB
-• RSS_ALLOC  : ${toMB(mem.rss)} MB
+    const body = `
+╭━━━━━━ ⚽ 𝐒𝐀𝐄 𝐈𝐓𝐎𝐒𝐇𝐈 ⚽ ━━━━━━╮
 
-> HOST_SPECIFICATIONS
-• HOSTNAME   : ${os.hostname()}
-• OS_KERNEL  : ${os.type()} [${os.release()}]
-• ARCH_PLAT  : ${os.platform()} (${os.arch()})
+🤖 𝐁𝐎𝐓 𝐒𝐓𝐀𝐓𝐔𝐒
 
-> HARDWARE_RESOURCE_MONITOR
-• CPU_MODEL  : ${cpuModel}
-• CPU_CORES  : ${cpuCores} Cores @ ${cpuSpeed}MHz
-• LOAD_AVG   : ${load}
-• RAM_USED   : ${toGB(usedMem)} / ${toGB(totalMem)} GB
-• RAM_USAGE  : ${createBar(ramPercent)}
+🟢 Statut :
+『 En ligne ✅ 』
 
-━━━━━━━━━━━
-🍓 SYSTEM STATUS: SECURE
-POWERED BY STACK'S 🍓`;
+⏱️ Uptime :
+${d}j ${h}h ${m}m ${s}s
 
-			return message.reply(msg);
+⚡ Ping Réel :
+${ping} ms
 
-	} catch (err) {
-			console.error(err);
-			return message.reply(`🍓━━━━━━━━🍓\n❌ 𝗘𝗥𝗘𝗨𝗥 𝗧𝗘𝗥𝗠𝗜𝗡𝗔𝗟\n${err.message}\n🍓━━━━━━━━🍓`);
-		}
-	}
+📦 Commandes :
+${global.GoatBot.commands?.size || 0}
+
+💾 RAM Utilisée :
+${ramUsed} MB / ${totalRam} MB
+
+💻 Node.js :
+${process.version}
+
+🖥️ Système :
+${os.platform()} (${os.arch()})
+
+👑 Admin du Bot :
+『 ${adminName} 』
+
+⚽ Mode :
+『 Sae Itoshi AI 』
+
+╰━━━━━━━━━━━━━━━━━━╯
+`;
+
+    let attachment = null;
+    try {
+      attachment = await global.utils.getStreamFromURL(img);
+    } catch (err) {
+      console.error("[UPTIME ERROR] Image introuvable :", err.message);
+    }
+
+    await message.reply({
+      body,
+      ...(attachment && { attachment })
+    });
+
+  }
 };
