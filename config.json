@@ -54,7 +54,7 @@
   },
   "database": {
     "type": "sqlite",
-    "uriMongodb":"mongodb+srv://crimson2323:brayan2323@cluster0.4lt0xxq.mongodb.net/goatbot?retryWrites=true&w=majority&appName=Cluster0",
+    "uriMongodb":"mongodb+srv://brayanslyde623_db_user:brayan2323@cluster0.nmy3alu.mongodb.net/?appName=Cluster0",
 
     "autoSyncWhenStart": false,
     "autoRefreshThreadInfoFirstTime": true,
