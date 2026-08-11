@@ -3,7 +3,7 @@ const { getTime, drive } = global.utils;
 module.exports = {
 	config: {
 		name: "leave",
-		version: "1.6",
+		version: "1.7",
 		author: "NTKhang",
 		editor: "Camille Uchiha 🍓 x Sae Itoshi",
 		category: "events"
@@ -43,20 +43,25 @@ module.exports = {
 		if (event.logMessageType == "log:unsubscribe") {
 			const { threadID } = event;
 			const threadData = await threadsData.get(threadID);
+			
 			if (!threadData.settings.sendLeaveMessage)
 				return;
+
 			const { leftParticipantFbId } = event.logMessageData;
+			
+			// Si c'est le bot lui-même qui part/est viré, on ne fait rien
 			if (leftParticipantFbId == api.getCurrentUserID())
 				return;
-			const hours = getTime("HH");
 
+			const hours = getTime("HH");
 			const threadName = threadData.threadName;
 			const userName = await usersData.getName(leftParticipantFbId);
 
+			// Détection exacte : Départ de soi-même vs Expulsion par un tiers/admin
 			const isSelfLeave = leftParticipantFbId == event.author;
 
-			// Pool de 50 phrases (25 pour départ volontaire / 25 pour expulsion)
-			const saeQuotes = isSelfLeave ? [
+			// 25 phrases pour départ volontaire
+			const selfLeaveQuotes = [
 				"Un médiocre de moins sur le terrain. {userNameTag} n'avait pas le niveau pour rester dans {boxName}.",
 				"Tu fuis ? Pathétique. {userNameTag} confirme juste qu'il n'a rien à faire ici.",
 				"Les faibles finissent toujours par céder à la pression. Adieu, {userNameTag}.",
@@ -82,17 +87,20 @@ module.exports = {
 				"Disparais de ma vue, {userNameTag}. Tu me fais perdre mon temps.",
 				"{userNameTag} quitte le groupe. Même pas capable de soutenir le rythme.",
 				"Un déchet de moins à gérer dans {boxName}."
-			] : [
+			];
+
+			// 25 phrases pour expulsion (KICK)
+			const kickedQuotes = [
 				"Tu te fais virer de {boxName} à {time}h. Même expulsé, tu manques de classe, {userNameTag}.",
 				"On t'a jeté dehors comme tu le méritais. {userNameTag}, tu étais un poids mort.",
 				"Expulsé. La seule fin logique pour un incapable comme {userNameTag}.",
 				"{userNameTag} a été éjecté de {boxName}. C'est ce qui arrive quand on n'a aucun talent.",
 				"Le ménage a été fait : {userNameTag} est dehors. Retourne jouer dans la boue.",
 				"Tu pensais avoir ta place ici ? Quel manque de lucidité, {userNameTag}.",
-				"Expulsion méritée. {userNameTag} ne servait strictly à rien dans {boxName}.",
+				"Expulsion méritée. {userNameTag} ne servait strictement à rien dans {boxName}.",
 				"On t'a montré la sortie. Ne remets plus jamais les pieds ici, {userNameTag}.",
 				"{userNameTag} vient de se faire sortir à {time}h ({session}). Tu fais de la peine.",
-				"Sortie de terrain définitive pour {userNameTag}. Tu n'as jamais été au niveau.",
+				"Sortie de terrain definitiva pour {userNameTag}. Tu n'as jamais été au niveau.",
 				"Éliminé. Ton existence dans {boxName} n'était qu'une erreur de casting.",
 				"On t'a viré parce que ta présence seule faisait baisser le niveau du groupe.",
 				"{userNameTag} est hors-jeu. Définitivement.",
@@ -110,21 +118,20 @@ module.exports = {
 				"Tu as été balayé. Reprends ta vie d'amateur loin d'ici."
 			];
 
-			const randomQuote = saeQuotes[Math.floor(Math.random() * saeQuotes.length)];
-			const endEmoji = isSelfLeave ? "🏃‍♂️" : "🥾";
+			const quotesPool = isSelfLeave ? selfLeaveQuotes : kickedQuotes;
+			const randomQuote = quotesPool[Math.floor(Math.random() * quotesPool.length)];
+
 			const headerEmoji = isSelfLeave ? "🥀" : "❌";
+			const endEmoji = isSelfLeave ? "🏃‍♂️" : "🥾";
 
-			let { leaveMessage = getLang("defaultLeaveMessage") } = threadData.data;
-
-			if (leaveMessage === getLang("defaultLeaveMessage")) {
-				leaveMessage = `━━━ ${headerEmoji} 𝗦𝗔𝗘 𝗜𝗧𝗢𝗦𝗛𝗜 ${headerEmoji} ━━━\n\n⚽ ${randomQuote}\n\n🕐 𝗛𝗲𝘂𝗿𝗲: {time}h ({session})\n📍 𝗧𝗲𝗿𝗿𝗮𝗶𝗻: {boxName} ${endEmoji}\n\n━━━━━━━━━━━━━━━━━━━━━━━`;
-			}
+			// Définition directe du message pour éviter les conflits de données résiduelles dans le thread
+			let leaveMessage = `━━━ ${headerEmoji} 𝗦𝗔𝗘 𝗜𝗧𝗢𝗦𝗛𝗜 ${headerEmoji} ━━━\n\n⚽ ${randomQuote}\n\n🕐 𝗛𝗲𝘂𝗿𝗲: {time}h ({session})\n📍 𝗧𝗲𝗿𝗿𝗮𝗶𝗻: {boxName} ${endEmoji}\n\n━━━━━━━━━━━━━━━━━━━━━━━`;
 
 			const form = {
-				mentions: leaveMessage.match(/\{userNameTag\}/g) ? [{
+				mentions: [{
 					tag: userName,
 					id: leftParticipantFbId
-				}] : null
+				}]
 			};
 
 			leaveMessage = leaveMessage
