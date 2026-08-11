@@ -6,7 +6,7 @@ module.exports = {
 	config: {
 		name: "welcome",
 		version: "2.2",
-		author: "NTKhang + Modified by Camille Uchiha x Sae Itoshi Mode",
+		author: " CRIMSON 🩵🪽",
 		category: "events"
 	},
 
