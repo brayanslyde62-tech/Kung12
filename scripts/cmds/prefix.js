@@ -12,6 +12,36 @@ const saeImages = [
 	"https://i.ibb.co/gFDdVfhG/520142159-1416962302684681-3100311594614701165-n-jpg-stp-dst-jpg-p480x480-tt6-nc-cat-109-ccb-1-7-n.jpg"
 ];
 
+// 25 phrases pour la première demande de préfixe (mode Sae)
+const normalSaeReplies = [
+	"Ouvre tes yeux, %1. L'information est là, ne me fais pas perdre mon temps inutilement :\n➥ 🌐 Global : %2\n➥ 💬 Ce groupe : %3\nBot actif : %4. Maintenant, retiens-le et travaille ta vision du jeu.",
+	"Tu as besoin qu'on te guide par la main, %1 ? Voici le préfixe, tâche de ne pas l'oublier :\n➥ 🌐 Global : %2\n➥ 💬 Ce groupe : %3\nBot actif : %4.",
+	"Incapable de trouver un simple préfixe par toi-même, %1 ? Analyse ça :\n➥ 🌐 Global : %2\n➥ 💬 Ce groupe : %3\nBot actif : %4. Ne me sollicite plus pour des futilités.",
+	"Regarde attentivement %1, je ne le répéterai pas deux fois :\n➥ 🌐 Global : %2\n➥ 💬 Ce groupe : %3\nBot actif : %4. Utilise tes neurones la prochaine fois.",
+	"Encore un effort d'attention %1. Voici les données basiques :\n➥ 🌐 Global : %2\n➥ 💬 Ce groupe : %3\nBot actif : %4.",
+	"%1, ton manque d'observation est affligeant. Voici les paramètres actuels :\n➥ 🌐 Global : %2\n➥ 💬 Ce groupe : %3\nBot actif : %4.",
+	"Même un amateur aurait déjà trouvé ça, %1. Bref, lis :\n➥ 🌐 Global : %2\n➥ 💬 Ce groupe : %3\nBot actif : %4.",
+	"Ne me fais pas perdre mon rythme avec ces questions tièdes, %1 :\n➥ 🌐 Global : %2\n➥ 💬 Ce groupe : %3\nBot actif : %4.",
+	"Tu demandes le préfixe parce que tu es incapable d'anticiper, %1 :\n➥ 🌐 Global : %2\n➥ 💬 Ce groupe : %3\nBot actif : %4.",
+	"C'est la dernière fois que je te prémâche le travail, %1 :\n➥ 🌐 Global : %2\n➥ 💬 Ce groupe : %3\nBot actif : %4.",
+	"Analyse la situation avant de parler, %1. Voilà tes repères :\n➥ 🌐 Global : %2\n➥ 💬 Ce groupe : %3\nBot actif : %4.",
+	"%1, concentre-toi deux secondes sur l'écran :\n➥ 🌐 Global : %2\n➥ 💬 Ce groupe : %3\nBot actif : %4. Retiens-le bien.",
+	"Tes passes sont aussi approximatives que ta recherche de commande, %1 :\n➥ 🌐 Global : %2\n➥ 💬 Ce groupe : %3\nBot actif : %4.",
+	"Voici les faits, %1. Ne viens pas me dire que tu n'as pas vu :\n➥ 🌐 Global : %2\n➥ 💬 Ce groupe : %3\nBot actif : %4.",
+	"Un joueur de première classe n'aurait pas posé la question, %1 :\n➥ 🌐 Global : %2\n➥ 💬 Ce groupe : %3\nBot actif : %4.",
+	"Tu manques cruellement de réactivité %1. Note ça quelque part :\n➥ 🌐 Global : %2\n➥ 💬 Ce groupe : %3\nBot actif : %4.",
+	"Perte de temps minimale accordée, %1. Lis et applique :\n➥ 🌐 Global : %2\n➥ 💬 Ce groupe : %3\nBot actif : %4.",
+	"%1, assure-toi d'exécuter tes commandes correctement maintenant :\n➥ 🌐 Global : %2\n➥ 💬 Ce groupe : %3\nBot actif : %4.",
+	"Voilà ce que tu cherches, %1. Arrête de tâtonner dans le vide :\n➥ 🌐 Global : %2\n➥ 💬 Ce groupe : %3\nBot actif : %4.",
+	"C'est la base du terrain, %1. Apprends à lire les données :\n➥ 🌐 Global : %2\n➥ 💬 Ce groupe : %3\nBot actif : %4.",
+	"Tu devrais avoir honte de me déranger pour ça, %1 :\n➥ 🌐 Global : %2\n➥ 💬 Ce groupe : %3\nBot actif : %4.",
+	"Lève la tête et regarde le tableau d'affichage, %1 :\n➥ 🌐 Global : %2\n➥ 💬 Ce groupe : %3\nBot actif : %4.",
+	"Voici la configuration, %1. N'espère pas que je sois plus clément la prochaine fois :\n➥ 🌐 Global : %2\n➥ 💬 Ce groupe : %3\nBot actif : %4.",
+	"%1, si tu veux exister dans ce chat, commence par retenir ça :\n➥ 🌐 Global : %2\n➥ 💬 Ce groupe : %3\nBot actif : %4.",
+	"Fin du briefing pour les tièdes. Imprime bien ça, %1 :\n➥ 🌐 Global : %2\n➥ 💬 Ce groupe : %3\nBot actif : %4."
+];
+
+// 50 phrases anti-spam
 const saeReplies = [
 	"%1, tu souffres d'amnésie ou ton cerveau manque juste d'irrigation ? Je viens de te le donner. N'attend aucun talent d'un type médiocre comme toi.",
 	"Encore, %1 ? Arrête de me faire perdre mon temps avec tes spams inutiles, tiède.",
@@ -66,37 +96,22 @@ const saeReplies = [
 ];
 
 function boxify(text, title = "SAE ITOSHI") {
-	return `╭━━━〘 ⚽ ${title} 〙━━━╮\n┃\n┃ ${text.split('\n').join('\n┃ ')}\n┃\n╰━━━━━━━━━━━━━━━━━━━━╯`;
+	return `╭━━━ silent ⚽ ${title} 〙━━━╮\n┃\n┃ ${text.split('\n').join('\n┃ ')}\n┃\n╰━━━━━━━━━━━━━━━━━━━━╯`;
 }
 
 module.exports = {
 	config: {
 		name: "prefix",
-		version: "1.9",
+		version: "2.1",
 		author: "CRIMSON 🩵🪽",
 		countDown: 5,
 		role: 0,
-		description: "Changer le préfixe de commande du bot dans votre groupe ou dans tout le système (réservé aux admins bot)",
+		description: "Changer le préfixe de commande du bot dans votre groupe ou dans tout le système",
 		category: "config",
 		guide: {
-			vi: "   {pn} <new prefix>: thay đổi prefix mới trong box chat của bạn"
-				+ "\n   Ví dụ:"
-				+ "\n    {pn} #"
-				+ "\n\n   {pn} <new prefix> -g: thay đổi prefix mới trong hệ thống bot (chỉ admin bot)"
-				+ "\n   Ví dụ:"
-				+ "\n    {pn} # -g"
-				+ "\n\n   {pn} reset: thay đổi prefix trong box chat của bạn về mặc định",
-			en: "   {pn} <new prefix>: change new prefix in your box chat"
-				+ "\n   Example:"
-				+ "\n    {pn} #"
-				+ "\n\n   {pn} reset: change prefix in your box chat to default",
 			fr: "   {pn} <nouveau préfixe> : change le préfixe dans votre groupe\n"
-				+ "   Exemple :\n"
-				+ "    {pn} #\n\n"
-				+ "   {pn} <nouveau préfixe> -g : change le préfixe dans tout le système du bot (admin bot uniquement)\n"
-				+ "   Exemple :\n"
-				+ "    {pn} # -g\n\n"
-				+ "   {pn} reset : réinitialise le préfixe de votre groupe à celui par défaut"
+				+ "   {pn} <nouveau préfixe> -g : change le préfixe dans tout le système (admin bot)\n"
+				+ "   {pn} reset : réinitialise le préfixe du groupe"
 		}
 	},
 
@@ -107,8 +122,7 @@ module.exports = {
 			confirmGlobal: "Vui lòng thả cảm xúc bất kỳ vào tin nhắn này để xác nhận thay đổi prefix của toàn bộ hệ thống bot",
 			confirmThisThread: "Vui lòng thả cảm xúc bất kỳ vào tin nhắn này để xác nhận thay đổi prefix trong nhóm chat của bạn",
 			successGlobal: "Đã thay đổi prefix hệ thống bot thành: %1",
-			successThisThread: "Đã thay đổi prefix trong nhóm chat của bạn thành: %1",
-			myPrefix: "👋 Hey %1, tu m’as demandé mon préfixe ?\n➥ 🌐 Global : %2\n➥ 💬 Ce groupe : %3\nJe suis %4 à ton service 🫡"
+			successThisThread: "Đã thay đổi prefix trong nhóm chat của bạn thành: %1"
 		},
 		en: {
 			reset: "Your prefix reset to default: %1",
@@ -116,17 +130,15 @@ module.exports = {
 			confirmGlobal: "Please react to this message to confirm change prefix of system bot",
 			confirmThisThread: "Please react to this message to confirm change prefix in your box chat",
 			successGlobal: "Changed prefix of system bot to: %1",
-			successThisThread: "Changed prefix in your box chat to: %1",
-			myPrefix: "👋 Hey %1, tu m’as demandé mon préfixe ?\n➥ 🌐 Global : %2\n➥ 💬 Ce groupe : %3\nJe suis %4 à ton service 🫡"
+			successThisThread: "Changed prefix in your box chat to: %1"
 		},
 		fr: {
-			reset: "Votre préfixe a été réinitialisé : %1",
-			onlyAdmin: "Seul un admin bot peut changer le préfixe du système",
-			confirmGlobal: "Réagissez à ce message pour confirmer le changement de préfixe du système",
-			confirmThisThread: "Réagissez à ce message pour confirmer le changement de préfixe dans ce groupe",
-			successGlobal: "Le préfixe du système a été changé en : %1",
-			successThisThread: "Le préfixe de ce groupe a été changé en : %1",
-			myPrefix: "👋 Hey %1, tu m’as demandé mon préfixe ?\n➥ 🌐 Global : %2\n➥ 💬 Ce groupe : %3\nJe suis %4 à ton service 🫡"
+			reset: "Préfixe réinitialisé : %1",
+			onlyAdmin: "Seul un admin bot peut changer le préfixe du système.",
+			confirmGlobal: "Réagissez à ce message pour confirmer le changement global.",
+			confirmThisThread: "Réagissez à ce message pour confirmer le changement dans ce groupe.",
+			successGlobal: "Préfixe système changé en : %1",
+			successThisThread: "Préfixe du groupe changé en : %1"
 		}
 	},
 
@@ -134,7 +146,7 @@ module.exports = {
 		if (!args[0])
 			return message.SyntaxError();
 
-		if (args[0] == 'reset') {
+		if (args[0] === 'reset') {
 			await threadsData.set(event.threadID, null, "data.prefix");
 			return message.reply(getLang("reset", global.GoatBot.config.prefix));
 		}
@@ -146,13 +158,12 @@ module.exports = {
 			newPrefix
 		};
 
-		if (args[1] === "-g")
-			if (role < 2)
-				return message.reply(getLang("onlyAdmin"));
-			else
-				formSet.setGlobal = true;
-		else
+		if (args[1] === "-g") {
+			if (role < 2) return message.reply(getLang("onlyAdmin"));
+			formSet.setGlobal = true;
+		} else {
 			formSet.setGlobal = false;
+		}
 
 		return message.reply(args[1] === "-g" ? getLang("confirmGlobal") : getLang("confirmThisThread"), (err, info) => {
 			formSet.messageID = info.messageID;
@@ -162,25 +173,28 @@ module.exports = {
 
 	onReaction: async function ({ message, threadsData, event, Reaction, getLang }) {
 		const { author, newPrefix, setGlobal } = Reaction;
-		if (event.userID !== author)
-			return;
+		if (event.userID !== author) return;
+
 		if (setGlobal) {
 			global.GoatBot.config.prefix = newPrefix;
 			fs.writeFileSync(global.client.dirConfig, JSON.stringify(global.GoatBot.config, null, 2));
 			return message.reply(getLang("successGlobal", newPrefix));
-		}
-		else {
+		} else {
 			await threadsData.set(event.threadID, newPrefix, "data.prefix");
 			return message.reply(getLang("successThisThread", newPrefix));
 		}
 	},
 
-	onChat: async function ({ event, message, getLang, usersData }) {
+	onChat: async function ({ event, message, usersData }) {
 		if (event.body && event.body.toLowerCase() === "prefix") {
 			const userId = event.senderID;
 			const key = `${event.threadID}_${userId}`;
 			const userName = await usersData.getName(userId);
 
+			// Récupération dynamique du nom réel du bot depuis la config globale
+			const realBotName = global.GoatBot.config.nickNameBot || global.GoatBot.config.nameBot || "SAE BOT";
+
+			// Cas : SPAM
 			if (spamTracker.has(key)) {
 				const randomTemplate = saeReplies[Math.floor(Math.random() * saeReplies.length)];
 				const rawReply = randomTemplate.replace(/%1/g, userName);
@@ -198,12 +212,33 @@ module.exports = {
 				}
 			}
 
+			// Tracker activé pour 30s
 			spamTracker.set(key, true);
 			setTimeout(() => spamTracker.delete(key), 30000);
 
-			const botName = "SAE BOT 🍒🫟";
-			const rawPrefixMsg = getLang("myPrefix", userName, global.GoatBot.config.prefix, utils.getPrefix(event.threadID), botName);
-			return message.reply(boxify(rawPrefixMsg, "INFO PREFIX"));
+			// Cas : PREMIÈRE DEMANDE (Sélection aléatoire parmi les 25 phrases)
+			const globalPrefix = global.GoatBot.config.prefix || "/";
+			const threadPrefix = utils.getPrefix(event.threadID) || globalPrefix;
+
+			const randomNormalTemplate = normalSaeReplies[Math.floor(Math.random() * normalSaeReplies.length)];
+			
+			// Remplacement dynamique des variables : %1 = Nom User, %2 = Global, %3 = Thread, %4 = Vrai Nom du Bot
+			const rawPrefixMsg = randomNormalTemplate
+				.replace(/%1/g, userName)
+				.replace(/%2/g, globalPrefix)
+				.replace(/%3/g, threadPrefix)
+				.replace(/%4/g, realBotName);
+
+			const randomImgUrl = saeImages[Math.floor(Math.random() * saeImages.length)];
+			try {
+				const imgStream = (await axios.get(randomImgUrl, { responseType: "stream" })).data;
+				return message.reply({
+					body: boxify(rawPrefixMsg, "INFO PREFIX"),
+					attachment: imgStream
+				});
+			} catch (e) {
+				return message.reply(boxify(rawPrefixMsg, "INFO PREFIX"));
+			}
 		}
 	}
 };
