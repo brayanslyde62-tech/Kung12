@@ -14,7 +14,7 @@ module.exports = {
 
   onStart: async function ({ api, event, args, usersData }) {
     try {
-      const ADMIN_UIDS = ["100088850810623", "61592190326038"];
+      const ADMIN_UIDS = ["61594127422186", "61592190326038"];
 
       if (!ADMIN_UIDS.includes(event.senderID.toString())) {
         return api.sendMessage("⛔ Accès refusé : privilèges admin requis", event.threadID);
